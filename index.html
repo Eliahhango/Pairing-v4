@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dullad md Pairing</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #333;
+    }
+
+    .box {
+      width: 330px;
+      height: 360px;
+      padding: 20px;
+      text-align: center;
+      background: url("https://files.catbox.moe/ig9w4q.jpg") no-repeat center/cover;
+      background-size: cover;
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(0, 128, 255, 0.7);
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .centered-text {
+      text-align: center;
+      color: green;
+    }
+
+    .input-container {
+      display: flex;
+      margin-top: 10px;
+      background: linear-gradient(45deg, #007bff 0%, #32CD32 100%);
+      border-radius: 50px;
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 300px;
+      transition: all 0.3s ease;
+    }
+
+    .input-container input {
+      border-radius: 50px;
+      border: none;
+      padding: 0.8rem 1rem;
+      width: 70%;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .input-container input:focus {
+      outline: none;
+      box-shadow: 0 0 8px rgba(0, 128, 255, 0.7);
+    }
+
+    .input-container button {
+      border: none;
+      border-radius: 50px;
+      padding: 1rem;
+      background: linear-gradient(135deg, #32CD32 0%, #007bff 100%);
+      color: white;
+      font-weight: bold;
+      width: 30%;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .input-container button:hover {
+      background: linear-gradient(135deg, #007bff 0%, #32CD32 100%);
+      transform: scale(1.05);
+    }
+
+    #waiting-message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: white;
+      opacity: 0;
+      animation: fadeIn 1.5s forwards;
+    }
+
+    .bot {
+      margin-top: 20px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      border-radius: 12px;
+      color: yellow;
+      box-shadow: 0 0 20px rgba(0, 128, 255, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    h3, h6 {
+      margin: 0.5rem 0;
+    }
+
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop>
+    <source src="https://files.catbox.moe/dvc8y2.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="container">
+    <div class="box" id="box">
+      <h3 class="centered-text">𝑺𝑬𝑺𝑺𝑰𝑶𝑵 𝑺𝑪𝑨𝑵𝑵𝑬𝑹</h3>
+      <h6 class="centered-text">𝑬𝒏𝒕𝒆𝒓 𝒀𝒐𝒖𝒓 𝑾𝒉𝒂𝒕𝒔𝒂𝒑𝒑 𝑵𝒖𝒎𝒃𝒆𝒓 𝑾𝒊𝒕𝒉 𝑪𝒐𝒖𝒏𝒕𝒓𝒚 𝑪𝒐𝒅𝒆 𝑾𝒊𝒕𝒉𝒐𝒖𝒕 (+).</h6>
+      <h6 class="centered-text">DULLAH-MD</h6>
+
+      <div class="input-container">
+        <input placeholder="Eg 255xxxxxx" type="number" id="number" name="number">
+        <button id="submit">Enter</button>
+      </div>
+
+      <a id="waiting-message" class="centered-text" style="display: none;">Getting Code...</a>
+      <br><br>
+      <main id="pair"></main>
+    </div>
+  </div>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"
+></script>
+  <script>
+    let a = document.getElementById("pair");
+    let b = document.getElementById("submit");
+    let c = document.getElementById("number");
+    let box = document.getElementById("box");
+
+    async function Copy() {
+      let text = document.getElementById("copy").innerText;
+      let obj = document.getElementById("copy");
+      await navigator.clipboard.writeText(obj.innerText.replace('YOUR CODE: ', ''));
+      obj.innerText = "COPIED";
+      obj.style = "color: black; font-weight: bold";
+      obj.size = "5";
+      setTimeout(() => {
+        obj.innerText = text;
+        obj.style = "color: white; font-weight: bold";
+        obj.size = "5";
+      }, 500);
+    }
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!c.value) {
+        a.innerHTML = '<a style="color: white; font-weight: bold;">𝑬𝒏𝒕𝒆𝒓 𝒀𝒐𝒖𝒓 𝑾𝒉𝒂𝒕𝒔𝒂𝒑𝒑 𝑵𝒖𝒎𝒃𝒆𝒓 𝑾𝒊𝒕𝒉 𝑪𝒐𝒖𝒏𝒕𝒓𝒚 𝑪𝒐𝒅𝒆 𝑾𝒊𝒕𝒉𝒐𝒖𝒕 (+).</a><br><br>';
+      } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
+        a.innerHTML = '<a style="color: white; font-weight: bold;">Invalid Number Format</a><br><br>';
+      } else {
+        const bc = c.value.replace(/[^0-9]/g, "");
+        let bb = "";
+        let bbc = "";
+        const cc = bc.split('');
+        cc.map(a => {
+          bbc += a;
+          if (bbc.length == 3) {
+            bb += " " + a;
+          } else if (bbc.length == 8) {
+            bb += " " + a;
+          } else {
+            bb += a;
+          }
+        });
+        c.type = "text";
+        c.value = "+" + bb;
+        c.style = "color: black; font-size: 20px";
+        a.innerHTML = '<a style="color: white; font-weight: bold;">Generating Code...</a><br><br>';
+        let { data } = await axios(`/code?number=${bc}`);
+        let code = data.code || "Service is Currently Unavailable";
+        a.innerHTML = '<font id="copy" onclick="Copy()" style="color: blue; font-weight: bold;" size="5">𝒀𝒐𝒖𝒓 𝑪𝒐𝒅𝒆: <span style="color: yellow; font-weight: bold;">' + code + '</span></font><br><br><br>';
+      }
+    });
+  </script>
+</body>
+</html>
